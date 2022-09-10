@@ -1,17 +1,4 @@
-.flex-container {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    padding: 16px;
-  }
-  
-  button {
-    margin: 8px;
-  }
-  
-  .mat-radio-button ~ .mat-radio-button {
-    margin-left: 16px;
-  }
+
   table {
     width: 100%;
   }
