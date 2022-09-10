@@ -13,11 +13,6 @@ import {HttpClientModule} from '@angular/common/http';
 import { ExampleDialog, HomeComponent } from './home/home.component';
 
 
-
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
