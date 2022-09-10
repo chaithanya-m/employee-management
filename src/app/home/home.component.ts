@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 export interface DialogData {
-  animal: string;
+  email: string;
   name: string;
 }
 
@@ -14,20 +14,26 @@ export interface DialogData {
 })
 export class HomeComponent implements OnInit {
 
-  animal: string="";
+  email: string="";
   name: string="";
+  datas :any[]=[]
+
+  
 
   constructor(public dialog: MatDialog) {}
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ExampleDialog, {
       width: '250px',
-      data: {name: this.name, animal: this.animal},
+      data: {name: this.name, email: this.email},
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.animal = result;
+      debugger
+      const data = {name:result.name, email:result.email};
+      this.datas.push(data);
+      
     });
   }
 

@@ -1,21 +1,12 @@
 
 
+    <button mat-raised-button (click)="openDialog()">Add Employee</button>
+    You chose: <i>{{name}}</i> <i>{{email}}</i>
+  <div *ngFor="let employee of datas">
+    <p>{{employee.name}}</p> <br>
+    <p>{{employee.email}}</p>
+  </div>
 
-
-<ol>
-  <li>
-    <mat-form-field appearance="fill">
-      <mat-label>What's your name?</mat-label>
-      <input matInput [(ngModel)]="name">
-    </mat-form-field>
-  </li>
-  <li>
-    <button mat-raised-button (click)="openDialog()">Pick one</button>
-  </li>
-  <li *ngIf="animal">
-    You chose: <i>{{animal}}</i>
-  </li>
-</ol>
 
 
 <!-- Copyright 2022 Google LLC. All Rights Reserved.
