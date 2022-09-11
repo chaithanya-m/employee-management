@@ -1,10 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-
-export interface DialogData {
-  email: string;
-  name: string;
-}
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Employee } from '../employee';
+import { EmployeeService } from '../employee.service'
 
 
 @Component({
@@ -22,12 +19,11 @@ export class HomeComponent implements OnInit {
       email:null
     }
   ]
-  displayedColumns: string[] = ['id', 'name', 'email', 'symbol'];
-  dataSource: EmployeeElement[] = [];
+  displayedColumns: string[] = ['id', 'name', 'email', 'Action'];
+  dataSource: Employee[] = [];
 
-  
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog,private employeeService: EmployeeService) {}
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ExampleDialog, {
@@ -37,18 +33,74 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      const x=Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      // const data = {id: x, name:result.name, email:result.email, symbol: ''};
       
-      const data = {id: 1, name:result.name, email:result.email, symbol: ''};
+      const newEmployee: Employee = {
+        name: result.name,
+        email: result.email
+      }
+      this.employeeService.AddEmployee(newEmployee).then(
+        (response) => {
+          this.getAllemployees()
+      }, (error)=>{
+        console.log(error)
+      });
+      
+
+      // .snapshotChanges().subscribe(
+      //   (data: any) => {
+      //     debugger
+      //     // this.dataSource = data;
+  
+      //   },
+      //   (error: any) => {
+      //     console.log(error);
+      //   });
+
       let dataSourceCopy = this.dataSource;
       // dataSourceCopy.push()
       // this.dataSource.push(data);
-      this.dataSource = ELEMENT_DATA;
+      // this.dataSource = ELEMENT_DATA;
       // debugger
     });
-    
+  }
+  getAllemployees(){
+    // debugger
+    let parsedEmployeeList: Employee[] = [];
+    this.employeeService.GetEmployeesList().snapshotChanges().subscribe(
+      (data: any) => {
+        // debugger
+        // this.dataSource = data;
+        data.forEach((item: any) => {
+          let a = item.payload.toJSON(); 
+          a['id'] = item.key;
+          parsedEmployeeList.push(a as Employee);
+        })
+        this.dataSource = parsedEmployeeList;
+      },
+      (error: any) => {
+        console.log(error);
+      });
+  }
+  edit(id:any){
+debugger
+  }
+  delete(id:any){
+debugger
   }
 
   ngOnInit(): void {
+    this.getAllemployees();
+    // this.employeeService.GetEmployeesList().snapshotChanges().subscribe(
+    //   (data: any) => {
+    //     debugger
+    //     this.dataSource = data;
+
+    //   },
+    //   (error: any) => {
+    //     console.log(error);
+    //   });
   }
   
 }
@@ -59,7 +111,7 @@ export class HomeComponent implements OnInit {
 export class ExampleDialog {
   constructor(
     public dialogRef: MatDialogRef<ExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    @Inject(MAT_DIALOG_DATA) public data: Employee,
   ) {}
 
   onNoClick(): void {
@@ -75,8 +127,8 @@ export interface EmployeeElement {
 }
 
 const ELEMENT_DATA: EmployeeElement[] = [
-  {id: 1, name: 'Hydrogen', email: 1.0079, symbol: 'H'},
-  {id: 2, name: 'Helium', email: 4.0026, symbol: 'He'},
+  {id: 1, name: 'Hydrogen', email: 1.0079, symbol: ''},
+  {id: 2, name: 'Helium', email: 4.0026, symbol: ''},
   // {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
   // {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
   // {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
