@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      const x=Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      // const x=Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
       // const data = {id: x, name:result.name, email:result.email, symbol: ''};
       
       const newEmployee: Employee = {
@@ -48,21 +48,10 @@ export class HomeComponent implements OnInit {
       });
       
 
-      // .snapshotChanges().subscribe(
-      //   (data: any) => {
-      //     debugger
-      //     // this.dataSource = data;
-  
-      //   },
-      //   (error: any) => {
-      //     console.log(error);
-      //   });
+     
 
       let dataSourceCopy = this.dataSource;
-      // dataSourceCopy.push()
-      // this.dataSource.push(data);
-      // this.dataSource = ELEMENT_DATA;
-      // debugger
+     
     });
   }
   getAllemployees(){
@@ -87,20 +76,13 @@ export class HomeComponent implements OnInit {
 debugger
   }
   delete(id:any){
-debugger
+    this.employeeService.DeleteEmployee(id) 
+    this.getAllemployees()
   }
 
   ngOnInit(): void {
     this.getAllemployees();
-    // this.employeeService.GetEmployeesList().snapshotChanges().subscribe(
-    //   (data: any) => {
-    //     debugger
-    //     this.dataSource = data;
-
-    //   },
-    //   (error: any) => {
-    //     console.log(error);
-    //   });
+    
   }
   
 }
@@ -119,30 +101,36 @@ export class ExampleDialog {
   }
 }
 
-export interface EmployeeElement {
-  name: string;
-  id: number;
-  email: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: EmployeeElement[] = [
-  {id: 1, name: 'Hydrogen', email: 1.0079, symbol: ''},
-  {id: 2, name: 'Helium', email: 4.0026, symbol: ''},
-  // {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  // {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  // {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  // {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  // {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  // {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  // {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  // {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
-
-
-
-
 
 /**  Copyright 2022 Google LLC. All Rights Reserved.
     Use of this source code is governed by an MIT-style license that
     can be found in the LICENSE file at https://angular.io/license */
+
+
+
+     // dataSourceCopy.push()
+      // this.dataSource.push(data);
+      // this.dataSource = ELEMENT_DATA;
+      // debugger
+
+
+       // .snapshotChanges().subscribe(
+      //   (data: any) => {
+      //     debugger
+      //     // this.dataSource = data;
+  
+      //   },
+      //   (error: any) => {
+      //     console.log(error);
+      //   });
+
+
+      // this.employeeService.GetEmployeesList().snapshotChanges().subscribe(
+    //   (data: any) => {
+    //     debugger
+    //     this.dataSource = data;
+
+    //   },
+    //   (error: any) => {
+    //     console.log(error);
+    //   });
