@@ -16,6 +16,17 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## App Screenshots
 
+**1. List Employees**
+
+![Screenshot from 2022-09-12 12-33-57](https://user-images.githubusercontent.com/78640499/189593140-de5288a0-3462-4de0-8bd6-c4f5ceb13593.png)
+
+**2. Create Employee**
+
+![Screenshot from 2022-09-12 12-34-23](https://user-images.githubusercontent.com/78640499/189593230-82d4ba94-0084-4872-9462-208a39268045.png)
+
+**3. Update Employee**
+
+![Screenshot from 2022-09-12 12-34-56](https://user-images.githubusercontent.com/78640499/189593270-ce25858e-ba3c-43af-afbb-f74839df0215.png)
 
 ## Running unit tests
 
