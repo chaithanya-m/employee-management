@@ -14,7 +14,6 @@ export class EmployeeService {
   employeeRef?: AngularFireObject<any>;
 
   constructor(private db: AngularFireDatabase) {}
-  // Create Student
   addEmployee(employee: Employee) {
     return this.employeesRef!.push({
       name: employee.name,
