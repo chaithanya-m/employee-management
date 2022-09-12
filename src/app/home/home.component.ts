@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service'
+import { first, take } from 'rxjs/operators';
 
 
 @Component({
@@ -11,10 +12,10 @@ import { EmployeeService } from '../employee.service'
 })
 export class HomeComponent implements OnInit {
 
-  email: string="";
-  name: string="";
+  email: any=null;
+  name: any=null;
   
-  displayedColumns: string[] = ['id', 'name', 'email', 'Action'];
+  displayedColumns: string[] = ['EMP_ID', 'Name', 'Email', 'Actions'];
   dataSource: Employee[] = [];
 
   constructor(public dialog: MatDialog, private employeeService: EmployeeService) {}
@@ -25,27 +26,26 @@ export class HomeComponent implements OnInit {
       data: {name: this.name, email: this.email},
     });
     dialogRef.afterClosed().subscribe(result => { 
-      debugger  
-      if(result == null){
-        return
-      }
+      if(result.name != null && result.email!=null){
+        debugger
       const newEmployee: Employee = {
         name: result.name,
         email: result.email
       }
-      this.employeeService.AddEmployee(newEmployee).then(
+      this.employeeService.addEmployee(newEmployee).then(
         (response) => {
           this.getAllemployees()
         }, (error)=>{
         console.log(error)
-      });     
+      });  
+    }   
     });
   }
   //get all employeees
   getAllemployees(){
     // debugger
     let parsedEmployeeList: Employee[] = [];
-    this.employeeService.GetEmployeesList().snapshotChanges().subscribe(
+    this.employeeService.getEmployeesList().snapshotChanges().subscribe(
       (data: any) => {
         // debugger
         data.forEach((item: any) => {
@@ -55,6 +55,7 @@ export class HomeComponent implements OnInit {
           parsedEmployeeList.push(a as Employee);
         })
         this.dataSource = parsedEmployeeList;
+        parsedEmployeeList=[]
       },
       (error: any) => {
         console.log(error);
@@ -62,23 +63,29 @@ export class HomeComponent implements OnInit {
   }
 
   edit(id:any){
-   
-    this.employeeService.GetEmployee(id).snapshotChanges() .subscribe(
-      
+    this.employeeService.getEmployee(id).snapshotChanges() .subscribe(
       (data: any) => {
-        debugger
         const employee = data.payload.toJSON();
         const dialogRef = this.dialog.open(ExampleDialog, {
           width: '250px',
           data: {name: employee.name, email: employee.email},
         })
-        dialogRef.afterClosed().subscribe(result => {    
-          debugger 
+        dialogRef.afterClosed().pipe(take(1)).subscribe(result => {    
+          debugger
           if(result == null){
             return
           }
-          this.employeeService.UpdateEmployee(result)
-          this.getAllemployees()    
+          else{
+            debugger
+            this.employeeService.
+            updateEmployee(result).then(
+              (response) => {
+                debugger
+                // this.getAllemployees()
+              }, (error)=>{
+              console.log(error)
+            });       
+          }       
         });
       },
       (error: any) => {
@@ -86,13 +93,13 @@ export class HomeComponent implements OnInit {
       });
   }
   delete(id:any){
-    this.employeeService.DeleteEmployee(id) 
+    this.employeeService.deleteEmployee(id) 
     this.getAllemployees()
   }
   ngOnInit(): void {
     this.getAllemployees();
   }
-  
+ 
 }
 // dialog class 
 @Component({
@@ -112,36 +119,20 @@ export class ExampleDialog {
   }
 }
 
-
-/**  Copyright 2022 Google LLC. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at https://angular.io/license */
-
-
-
-     // dataSourceCopy.push()
-      // this.dataSource.push(data);
-      // this.dataSource = ELEMENT_DATA;
-      // debugger
-
-
-       // .snapshotChanges().subscribe(
-      //   (data: any) => {
-      //     debugger
-      //     // this.dataSource = data;
-  
-      //   },
-      //   (error: any) => {
-      //     console.log(error);
-      //   });
-
-
-      // this.employeeService.GetEmployeesList().snapshotChanges().subscribe(
-    //   (data: any) => {
-    //     debugger
-    //     this.dataSource = data;
-
-    //   },
-    //   (error: any) => {
-    //     console.log(error);
-    //   });
+// // dialog class 
+// @Component({
+//   selector: 'update-employee-dialog',
+//   templateUrl: 'example-dialog.html',
+// })
+// export class UpdateEmployeeeDialog {
+//   constructor(
+//     public dialogRef: MatDialogRef<UpdateEmployeeeDialog>,
+//     @Inject(MAT_DIALOG_DATA) public data: Employee,
+//   ) {}
+//   Employee={
+//   name:"hello"
+//   }
+//   onNoClick(): void {
+//     this.dialogRef.close();
+//   }
+// }

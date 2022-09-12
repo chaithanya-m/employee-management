@@ -15,27 +15,27 @@ export class EmployeeService {
 
   constructor(private db: AngularFireDatabase) {}
   // Create Student
-  AddEmployee(employee: Employee) {
+  addEmployee(employee: Employee) {
     return this.employeesRef!.push({
       name: employee.name,
       email: employee.email,
     })
   }
-  GetEmployee(id: string) {
+  getEmployee(id: string) {
     this.employeeRef = this.db.object('employees-list/' + id);
     return this.employeeRef;
   }
-  GetEmployeesList() {
+  getEmployeesList() {
     this.employeesRef = this.db.list('employees-list');
     return this.employeesRef;
   }
-  UpdateEmployee(employee: Employee) {
-    this.employeeRef!.update({
+  updateEmployee(employee: Employee) {
+    return this.employeeRef!.update({
       name: employee.name,
       email: employee.email,
     });
   }
-  DeleteEmployee(id: string) {
+  deleteEmployee(id: string) {
     this.employeeRef = this.db.object('employees-list/' + id);
     this.employeeRef.remove();
   }
