@@ -22,12 +22,11 @@ export class HomeComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ExampleDialog, {
-      width: '250px',
+      width: '300px',
       data: {name: this.name, email: this.email},
     });
     dialogRef.afterClosed().subscribe(result => { 
       if(result.name != null && result.email!=null){
-        debugger
       const newEmployee: Employee = {
         name: result.name,
         email: result.email
@@ -43,14 +42,11 @@ export class HomeComponent implements OnInit {
   }
   //get all employeees
   getAllemployees(){
-    // debugger
     let parsedEmployeeList: Employee[] = [];
     this.employeeService.getEmployeesList().snapshotChanges().subscribe(
       (data: any) => {
-        // debugger
         data.forEach((item: any) => {
           let a = item.payload.toJSON(); 
-          // debugger
           a['id'] = item.key;
           parsedEmployeeList.push(a as Employee);
         })
@@ -67,21 +63,18 @@ export class HomeComponent implements OnInit {
       (data: any) => {
         const employee = data.payload.toJSON();
         const dialogRef = this.dialog.open(ExampleDialog, {
-          width: '250px',
+          width: '300px',
           data: {name: employee.name, email: employee.email},
         })
         dialogRef.afterClosed().pipe(take(1)).subscribe(result => {    
-          debugger
           if(result == null){
             return
           }
           else{
-            debugger
             this.employeeService.
             updateEmployee(result).then(
               (response) => {
-                debugger
-                // this.getAllemployees()
+               
               }, (error)=>{
               console.log(error)
             });       
@@ -104,7 +97,7 @@ export class HomeComponent implements OnInit {
 // dialog class 
 @Component({
   selector: 'example-dialog',
-  templateUrl: 'example-dialog.html',
+  templateUrl: 'emp-detail-dialog.html',
 })
 export class ExampleDialog {
   constructor(
@@ -118,21 +111,3 @@ export class ExampleDialog {
     this.dialogRef.close();
   }
 }
-
-// // dialog class 
-// @Component({
-//   selector: 'update-employee-dialog',
-//   templateUrl: 'example-dialog.html',
-// })
-// export class UpdateEmployeeeDialog {
-//   constructor(
-//     public dialogRef: MatDialogRef<UpdateEmployeeeDialog>,
-//     @Inject(MAT_DIALOG_DATA) public data: Employee,
-//   ) {}
-//   Employee={
-//   name:"hello"
-//   }
-//   onNoClick(): void {
-//     this.dialogRef.close();
-//   }
-// }
