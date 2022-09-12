@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ExampleDialog, {
+    const dialogRef = this.dialog.open(EmployeeDetailDialog, {
       width: '300px',
       data: {name: '', email: ''},
     });
@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit {
       (data: any) => {
         const employee = data.payload.toJSON();
         
-        const dialogRef = this.dialog.open(ExampleDialog, {
+        const dialogRef = this.dialog.open(EmployeeDetailDialog, {
           width: '300px',
           data: {name: employee.name, email: employee.email},
         })
@@ -90,15 +90,15 @@ export class HomeComponent implements OnInit {
 }
 // dialog class 
 @Component({
-  selector: 'example-dialog',
+  selector: 'emp-detail-dialog',
   templateUrl: 'emp-detail-dialog.html',
 })
-export class ExampleDialog {
+export class EmployeeDetailDialog {
   formGroup: FormGroup;
   
   constructor(
     private formBuilder: FormBuilder, 
-    public dialogRef: MatDialogRef<ExampleDialog>,
+    public dialogRef: MatDialogRef<EmployeeDetailDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Employee,
   ) {
 

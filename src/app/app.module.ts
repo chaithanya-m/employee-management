@@ -18,14 +18,14 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component'
-import { ExampleDialog, HomeComponent } from './home/home.component';
+import { EmployeeDetailDialog, HomeComponent } from './home/home.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    ExampleDialog
+    EmployeeDetailDialog
   ],
   imports: [
     BrowserModule,
