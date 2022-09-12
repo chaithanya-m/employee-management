@@ -2,9 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service'
-import { first, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-
 
 @Component({
   selector: 'app-home',
@@ -43,16 +42,17 @@ export class HomeComponent implements OnInit {
     this.employeeService.getEmployeesList().snapshotChanges().subscribe(
       (data: any) => {
         data.forEach((item: any) => {
-          let a = item.payload.toJSON(); 
-          a['id'] = item.key;
-          parsedEmployeeList.push(a as Employee);
+          let employee = item.payload.toJSON(); 
+          employee['id'] = item.key;
+          parsedEmployeeList.push(employee as Employee);
         })
         this.dataSource = parsedEmployeeList;
         parsedEmployeeList=[]
       },
       (error: any) => {
         console.log(error);
-      });
+      }
+    );
   }
 
   edit(id:any){
@@ -81,13 +81,15 @@ export class HomeComponent implements OnInit {
       },
       (error: any) => {
         console.log(error);
-      });
+      }
+    );
   }
   delete(id:any){
     this.employeeService.deleteEmployee(id) 
     this.getAllemployees()
   } 
 }
+
 // dialog class 
 @Component({
   selector: 'emp-detail-dialog',
@@ -101,7 +103,6 @@ export class EmployeeDetailDialog {
     public dialogRef: MatDialogRef<EmployeeDetailDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Employee,
   ) {
-
     let emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     this.formGroup = this.formBuilder.group({
       'name': [data.name, Validators.required],
